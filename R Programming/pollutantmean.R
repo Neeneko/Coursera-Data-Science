@@ -1,4 +1,4 @@
-pollutantmean <- function(directory, pollutant, id = 1:332) {
+ pollutantmean <- function(directory, pollutant, id = 1:332) {
   acc <- NA
   for(i in id)
   {
