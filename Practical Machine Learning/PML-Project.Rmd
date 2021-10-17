@@ -157,12 +157,12 @@ Random Forest seems to have behaved the best, with an accuracy of 1.0, which pro
 
 Interestingly enough, the combination model preformed the worst, which might be worth investigating at a later point.
 
-Model|Accuracy|Kappa
------|--------|-----
-Decision Tree|`r as.numeric(tree_cm$overall['Accuracy'])`|`r as.numeric(tree_cm$overall['Kappa'])`
-Random Forest|`r as.numeric(forest_cm$overall['Accuracy'])`|`r as.numeric(forest_cm$overall['Kappa'])`
-Gradient Boost|`r as.numeric(gbm_cm$overall['Accuracy'])`|`r as.numeric(gbm_cm$overall['Kappa'])`
-Combined|`r as.numeric(comb_cm$overall['Accuracy'])`|`r as.numeric(comb_cm$overall['Kappa'])`
+Model|Accuracy|Kappa|Out of Sample Error
+-----|--------|-----|-------------------
+Decision Tree|`r as.numeric(tree_cm$overall['Accuracy'])`|`r as.numeric(tree_cm$overall['Kappa'])`|`r 1-as.numeric(tree_cm$overall['Accuracy'])`
+Random Forest|`r as.numeric(forest_cm$overall['Accuracy'])`|`r as.numeric(forest_cm$overall['Kappa'])`|`r 1-as.numeric(forest_cm$overall['Accuracy'])`
+Gradient Boost|`r as.numeric(gbm_cm$overall['Accuracy'])`|`r as.numeric(gbm_cm$overall['Kappa'])`|`r 1-as.numeric(gbm_cm$overall['Accuracy'])`
+Combined|`r as.numeric(comb_cm$overall['Accuracy'])`|`r as.numeric(comb_cm$overall['Kappa'])`|`r 1-as.numeric(comb_cm$overall['Accuracy'])`
 
 ### Final Prediction
 
