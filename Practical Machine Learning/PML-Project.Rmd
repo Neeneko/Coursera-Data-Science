@@ -1,0 +1,172 @@
+---
+title: "Practical Machine Learning - Final Project"
+author: "Nathan Weyer"
+date: "10/17/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Overview
+
+This document is the final project for the [Practical Machine Learning](https://www.coursera.org/learn/practical-machine-learning) module.  The objective of this project is to examine a dataset of movements as recorded by wearable recording devices and the determine which exersize was being preformed.
+
+It should be noted that at the time of this writing, the codebook is no longer available for download.
+
+## Assignment
+
+Using devices such as Jawbone Up, Nike FuelBand, and Fitbit it is now possible to collect a large amount of data about personal activity relatively inexpensively. These type of devices are part of the quantified self movement – a group of enthusiasts who take measurements about themselves regularly to improve their health, to find patterns in their behavior, or because they are tech geeks. One thing that people regularly do is quantify how much of a particular activity they do, but they rarely quantify how well they do it. In this project, your goal will be to use data from accelerometers on the belt, forearm, arm, and dumbell of 6 participants. They were asked to perform barbell lifts correctly and incorrectly in 5 different ways. More information is available from the website here: http://groupware.les.inf.puc-rio.br/har (see the section on the Weight Lifting Exercise Dataset). 
+
+## Loading and Cleaning
+
+### Libraries
+
+```{r,warning=FALSE,message=FALSE}
+library(dplyr)
+library(ggplot2)
+library(caret)
+library(rattle)
+library(randomForestExplainer)
+library(mgcv)
+```
+
+### Soure Data
+
+```{r,echo=TRUE}
+raw_train_data <- read.csv("pml-training.csv")
+raw_test_data <- read.csv("pml-testing.csv")
+set.seed(17)
+```
+
+### Initial Exploration
+
+```{r,echo=TRUE}
+dim(raw_test_data)
+dim(raw_train_data)
+```
+
+### Partition and Factor the Data
+
+```{r,echo=TRUE}
+train_data <- raw_train_data
+train_data$classe <- factor(train_data$classe)
+train_rows <- createDataPartition(y=train_data$classe, p=0.7, list=FALSE)
+train_data <- train_data[train_rows, ]; 
+validation_data <- train_data[-train_rows, ]
+```
+
+### Remove Index, TimeStamps, Mosty NA, and near zero varience features.
+
+```{r,echo=TRUE}
+static_features <- c("X","raw_timestamp_part_1","raw_timestamp_part_2","cvtd_timestamp")
+na_features <- names(raw_train_data)[sapply(raw_train_data, function(x) mean(is.na(x))) > 0.80]
+near_zero_features <- names(raw_train_data)[nearZeroVar(raw_train_data)]
+skip_features <- c(static_features,near_zero_features,na_features)
+train_data <- train_data[ , -which(names(raw_test_data) %in% skip_features)]
+validation_data <- validation_data[ , -which(names(raw_test_data) %in% skip_features)]
+test_data <- raw_test_data[ , -which(names(raw_test_data) %in% skip_features)]
+
+dim(train_data)
+dim(validation_data)
+dim(test_data)
+```
+
+This leaves us with 55 features out of the original 160
+
+## Models
+
+We will be trying a number of models here, specifically Decision Trees, Random Forest, and 
+
+First let us set up a common training parameter control, with 5 fold cross validation
+
+```{r,echo=TRUE}
+train_params <- trainControl(method = "cv", number = 5)
+```
+
+### Decision Tree
+#### Training
+
+```{r,echo=TRUE,cache = TRUE}
+tree_train <- train(classe ~ .,data=train_data,method='rpart',trControl=train_params)
+```
+
+```{r,echo=TRUE}
+fancyRpartPlot(tree_train$finalModel)
+```
+
+#### Prediction
+```{r,echo=TRUE}
+tree_predict <- predict(tree_train,validation_data)
+tree_cm <- confusionMatrix(tree_predict, validation_data$classe)
+print(tree_cm)
+```
+
+### Random Forest
+#### Training
+
+```{r,echo=TRUE,cache = TRUE}
+forest_train <- train(classe ~ .,data=train_data,method='rf',trControl=train_params)
+min_depth_frame <- min_depth_distribution(forest_train$finalModel)
+```
+
+```{r,echo=TRUE}
+plot_min_depth_distribution(min_depth_frame)
+```
+
+#### Prediction
+```{r,echo=TRUE}
+forest_predict <- predict(forest_train,validation_data)
+forest_cm <- confusionMatrix(forest_predict, validation_data$classe)
+print(forest_cm)
+```
+
+### Gradient Boost
+
+#### Training
+
+```{r,echo=TRUE,cache = TRUE}
+gbm_train <- train(classe ~ .,data=train_data,method='gbm',trControl=train_params,verbose = FALSE)
+```
+
+```{r,echo=TRUE}
+ggplot(gbm_train)
+```
+
+#### Prediction
+```{r,echo=TRUE}
+gbm_predict <- predict(gbm_train,validation_data)
+gbm_cm <- confusionMatrix(gbm_predict, validation_data$classe)
+print(gbm_cm)
+```
+
+### Combined
+
+```{r,echo=TRUE}
+comb_df = data.frame(tree_predict,forest_predict,gbm_predict,classe=validation_data$classe)
+comb_train = train(classe ~ .,data=comb_df,method="gam",trControl=train_params)
+comb_predict = predict(comb_train,comb_df)
+comb_cm <- confusionMatrix(comb_predict, validation_data$classe)
+print(comb_cm)
+```
+
+## Results
+
+Random Forest seems to have behaved the best, with an accuracy of 1.0, which probably means it overfit even with the validation data.
+
+Interestingly enough, the combination model preformed the worst, which might be worth investigating at a later point.
+
+Model|Accuracy|Kappa
+-----|--------|-----
+Decision Tree|`r as.numeric(tree_cm$overall['Accuracy'])`|`r as.numeric(tree_cm$overall['Kappa'])`
+Random Forest|`r as.numeric(forest_cm$overall['Accuracy'])`|`r as.numeric(forest_cm$overall['Kappa'])`
+Gradient Boost|`r as.numeric(gbm_cm$overall['Accuracy'])`|`r as.numeric(gbm_cm$overall['Kappa'])`
+Combined|`r as.numeric(comb_cm$overall['Accuracy'])`|`r as.numeric(comb_cm$overall['Kappa'])`
+
+### Final Prediction
+
+```{r,echo=TRUE}
+test_predict <- predict(forest_train, raw_test_data)
+print(test_predict)
+```
