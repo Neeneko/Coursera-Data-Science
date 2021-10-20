@@ -1,0 +1,29 @@
+---
+title: "Week 2 Leaflet Project"
+author: "Nathan Weyer"
+date: "10/20/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r ,warning=FALSE,message=FALSE}
+library(leaflet)
+library(sf)
+```
+
+## Using Leaflet to create a simple interactive map.  Map displays Philadelphia with census tract overlay and tract id mouseover.
+
+```{r warning=FALSE,message=FALSE,results='hide'}
+shape_file_name = file.path("Census_Tracts_2010","c16590ca-5adf-4332-aaec-9323b2fa7e7d2020328-1-1jurugw.pr6w.shp")
+shape_file = st_read(shape_file_name)
+bbox <- st_bbox(shape_file) %>% as.vector()
+my_map <- leaflet(options = leafletOptions(zoomSnap = 0.01)) %>% addTiles() %>% fitBounds(bbox[1],bbox[2],bbox[3],bbox[4],options=list(padding=c(0,0)))
+my_map <- my_map %>% addPolygons(data=shape_file,label=shape_file$TRACTCE10)
+```
+
+```{r echo=FALSE}
+my_map
+```

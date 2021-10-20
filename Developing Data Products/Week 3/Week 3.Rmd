@@ -1,0 +1,53 @@
+---
+title: "Developing Data Products - Week 3"
+author: "Nathan Weyer"
+date: "10/20/2021"
+output: ioslides_presentation
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+## Initial Slide.
+
+Create a web page presentation using R Markdown that features a plot created with Plotly. Host your webpage on either GitHub Pages, RPubs, or NeoCities. Your webpage must contain the date that you created the document, and it must contain a plot created with Plotly. We would love to see you show off your creativity! 
+
+### Review criteria
+
+The rubric contains the following two questions:
+
+- Does the web page feature a date and is this date less than two months before the date that you're grading this assignment?
+- Is the web page a presentation and does it feature an interactive plot that appears to have been created with Plotly?
+
+## Philadelphia Cencus Tracts by Land Area (code)
+
+```{r echo = FALSE, warning=FALSE,message=FALSE,results='hide'}
+library(plotly)
+library(sf)
+Sys.setenv(MAPBOX_TOKEN = 11122223333444)
+shape_file_name = file.path("Census_Tracts_2010",
+                      "c16590ca-5adf-4332-aaec-9323b2fa7e7d2020328-1-1jurugw.pr6w.shp")
+shape_file = st_read(shape_file_name)
+```
+
+
+```{r echo = TRUE, warning=FALSE,message=FALSE,results='hide'}
+plot <- ggplot(shape_file,aes(fill=ALAND10,text=NAMELSAD10)) + geom_sf()
+plot <- plot + theme_minimal()
+plot <- plot + scale_fill_gradient(low="blue",high="red")
+plot <- plot + theme(axis.text.x=element_blank())
+plot <- plot + theme(axis.text.y=element_blank())
+plot <- plot %>% hide_legend() 
+ggplotly(plot)
+```
+## Philadelphia Cencus Tracts by Land Area (map)
+
+
+```{r echo=FALSE}
+ggplotly(plot)
+```
+
+## Final Slide
+
+This is a third slide.  It identifies itself as such.
