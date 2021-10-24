@@ -13,40 +13,15 @@ knitr::opts_chunk$set(echo = FALSE)
 
 Visualizing Philadelphia Census data using Shiny and Plotly.
 
-## Assignment
-Your Shiny Application
-
-- Write a shiny application with associated supporting documentation. The documentation should be thought of as whatever a user will need to get started using your application.
-
-- Deploy the application on Rstudio's shiny server
-
-- Share the application link by pasting it into the provided text box
-
-- Share your server.R and ui.R code on github
-
-The application must include the following:
-
-- Some form of input (widget: textbox, radio button, checkbox, ...)
-
-- Some operation on the ui input in sever.R
-
-- Some reactive output displayed as a result of server calculations
-
-- You must also include enough documentation so that a novice user could use your application.
-
-- The documentation should be at the Shiny website itself. Do not post to an external link.
 
 ## Application Overview
 
-- The application is written using R, Shiny, and Plotly.
+* The application is written using R, Shiny, and Plotly.
+* The Source is split between cooker.R, server.R, and ui.R
+* Data is pre-processed and saved as data.rds
+* Application is hosed on RStudio's ShinyApps.io service.
 
-- The Source is split between cooker.R, server.R, and ui.R
-
-- Data is pre-processed and saved as data.rds
-
-- Application is hosed on RStudio's ShinyApps.io service.
-
-## Operation
+### Operation
 
 * Top Panel contains basic instructions
 * Dataset panel allows selection of dataset
@@ -97,3 +72,8 @@ subplot(lplot,rplot)
 ```
 
 ## Links
+
+- [Link to Shiny App hosted on Shineyapps.io](https://n6buuk-neeneko.shinyapps.io/census_viewer/)
+- [Link to GitHub Repo for project](https://github.com/Neeneko/Coursera-Data-Science/tree/main/Developing%20Data%20Products/Week%204)
+- [Link to Census Tracks Shapefile](https://www.opendataphilly.org/dataset/census-tracts)
+- Data sourced from [Census Reporter](https://censusreporter.org/) website.
