@@ -1,0 +1,13 @@
+name: census_viewer
+title: census_viewer
+username:
+account: n6buuk-neeneko
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 4945134
+bundleId: 5172251
+url: https://n6buuk-neeneko.shinyapps.io/census_viewer/
+when: 1635099908.84287
+lastSyncTime: 1635099908.84287
+asMultiple: FALSE
+asStatic: FALSE

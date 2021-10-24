@@ -1,0 +1,156 @@
+{
+    "release": {
+        "id": "acs2019_5yr",
+        "years": "2015-2019",
+        "name": "ACS 2019 5-year"
+    },
+    "tables": {
+        "B15002": {
+            "title": "Sex by Educational Attainment for the Population 25 Years and Over",
+            "universe": "Population 25 Years and Over",
+            "denominator_column_id": "B15002001",
+            "columns": {
+                "B15002001": {
+                    "name": "Total:",
+                    "indent": 0
+                },
+                "B15002002": {
+                    "name": "Male:",
+                    "indent": 1
+                },
+                "B15002003": {
+                    "name": "No schooling completed",
+                    "indent": 2
+                },
+                "B15002004": {
+                    "name": "Nursery to 4th grade",
+                    "indent": 2
+                },
+                "B15002005": {
+                    "name": "5th and 6th grade",
+                    "indent": 2
+                },
+                "B15002006": {
+                    "name": "7th and 8th grade",
+                    "indent": 2
+                },
+                "B15002007": {
+                    "name": "9th grade",
+                    "indent": 2
+                },
+                "B15002008": {
+                    "name": "10th grade",
+                    "indent": 2
+                },
+                "B15002009": {
+                    "name": "11th grade",
+                    "indent": 2
+                },
+                "B15002010": {
+                    "name": "12th grade, no diploma",
+                    "indent": 2
+                },
+                "B15002011": {
+                    "name": "High school graduate (includes equivalency)",
+                    "indent": 2
+                },
+                "B15002012": {
+                    "name": "Some college, less than 1 year",
+                    "indent": 2
+                },
+                "B15002013": {
+                    "name": "Some college, 1 or more years, no degree",
+                    "indent": 2
+                },
+                "B15002014": {
+                    "name": "Associate's degree",
+                    "indent": 2
+                },
+                "B15002015": {
+                    "name": "Bachelor's degree",
+                    "indent": 2
+                },
+                "B15002016": {
+                    "name": "Master's degree",
+                    "indent": 2
+                },
+                "B15002017": {
+                    "name": "Professional school degree",
+                    "indent": 2
+                },
+                "B15002018": {
+                    "name": "Doctorate degree",
+                    "indent": 2
+                },
+                "B15002019": {
+                    "name": "Female:",
+                    "indent": 1
+                },
+                "B15002020": {
+                    "name": "No schooling completed",
+                    "indent": 2
+                },
+                "B15002021": {
+                    "name": "Nursery to 4th grade",
+                    "indent": 2
+                },
+                "B15002022": {
+                    "name": "5th and 6th grade",
+                    "indent": 2
+                },
+                "B15002023": {
+                    "name": "7th and 8th grade",
+                    "indent": 2
+                },
+                "B15002024": {
+                    "name": "9th grade",
+                    "indent": 2
+                },
+                "B15002025": {
+                    "name": "10th grade",
+                    "indent": 2
+                },
+                "B15002026": {
+                    "name": "11th grade",
+                    "indent": 2
+                },
+                "B15002027": {
+                    "name": "12th grade, no diploma",
+                    "indent": 2
+                },
+                "B15002028": {
+                    "name": "High school graduate (includes equivalency)",
+                    "indent": 2
+                },
+                "B15002029": {
+                    "name": "Some college, less than 1 year",
+                    "indent": 2
+                },
+                "B15002030": {
+                    "name": "Some college, 1 or more years, no degree",
+                    "indent": 2
+                },
+                "B15002031": {
+                    "name": "Associate's degree",
+                    "indent": 2
+                },
+                "B15002032": {
+                    "name": "Bachelor's degree",
+                    "indent": 2
+                },
+                "B15002033": {
+                    "name": "Master's degree",
+                    "indent": 2
+                },
+                "B15002034": {
+                    "name": "Professional school degree",
+                    "indent": 2
+                },
+                "B15002035": {
+                    "name": "Doctorate degree",
+                    "indent": 2
+                }
+            }
+        }
+    }
+}

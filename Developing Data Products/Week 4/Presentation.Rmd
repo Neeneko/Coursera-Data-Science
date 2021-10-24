@@ -1,0 +1,99 @@
+---
+title: "Developing Data Products - Week 4"
+author: "Nathan Weyer"
+date: "10/24/2021"
+output: ioslides_presentation
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+## Developing Data Products - Week 4 Project
+
+Visualizing Philadelphia Census data using Shiny and Plotly.
+
+## Assignment
+Your Shiny Application
+
+- Write a shiny application with associated supporting documentation. The documentation should be thought of as whatever a user will need to get started using your application.
+
+- Deploy the application on Rstudio's shiny server
+
+- Share the application link by pasting it into the provided text box
+
+- Share your server.R and ui.R code on github
+
+The application must include the following:
+
+- Some form of input (widget: textbox, radio button, checkbox, ...)
+
+- Some operation on the ui input in sever.R
+
+- Some reactive output displayed as a result of server calculations
+
+- You must also include enough documentation so that a novice user could use your application.
+
+- The documentation should be at the Shiny website itself. Do not post to an external link.
+
+## Application Overview
+
+- The application is written using R, Shiny, and Plotly.
+
+- The Source is split between cooker.R, server.R, and ui.R
+
+- Data is pre-processed and saved as data.rds
+
+- Application is hosed on RStudio's ShinyApps.io service.
+
+## Operation
+
+* Top Panel contains basic instructions
+* Dataset panel allows selection of dataset
+  + Age By Sex
+  + Education By Sex
+* Map Panel displays map of census tracts, which are selectable
+* Histogram Panel is loaded when Map Panel item is selected
+
+## Example Page
+
+```{r echo = FALSE, warning=FALSE,message=FALSE}
+library(shiny)
+library(sf)
+library(rjson)
+library(stringr)
+library(plotly)
+library(gridExtra)
+data_name = file.path("census_viewer","data.rds")
+data = readRDS(data_name)
+DataSet <- "Age"
+lplot <- plot_ly(data$shape_file,
+                         split=~NAMELSAD10,
+                         color=reformulate(DataSet),
+                         text=~NAMELSAD10,
+                         span = I(1),
+                         hoveron = "fills",
+                         hoverinfo = "text",
+                         showlegend=FALSE,
+                         source = "A",
+                         key=~GEOID10) 
+key <- 42101031200
+shape_row = data$shape_file[which(data$shape_file$GEOID10 == key),]
+
+geo_idx <- which(colnames(df)=="GEOID10")
+mData <- data[[DataSet]][['Male']] 
+fData <- data[[DataSet]][['Female']] 
+        
+mx   <- colnames(mData)[colnames(mData) != 'GEOID10']
+xform <- list(categoryorder = "array",categoryarray = mx)
+        
+my   <- as.numeric(mData[which(mData$GEOID10 == key),!(names(mData) %in% c('GEOID10'))])
+fy   <- as.numeric(fData[which(fData$GEOID10 == key),!(names(fData) %in% c('GEOID10'))])
+rplot <- plot_ly(mData,x=mx,y=my, type = 'bar', name = 'Male',orientation = 'v')
+rplot <- rplot %>% add_trace(y=fy,name="Female")
+rplot <- rplot %>% layout(barmode = 'group',xaxis=xform)
+
+subplot(lplot,rplot)
+```
+
+## Links
